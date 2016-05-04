@@ -13,23 +13,23 @@ switch ($_SERVER['HTTP_HOST']) {
 		defined('SITE_HOST') ? null : define('SITE_HOST', 'imagematcher');
 		defined('ROOT_DIR') ? null : define('ROOT_DIR', $_SERVER['DOCUMENT_ROOT'] . DS . SITE_HOST . DS);
 		defined('BASE_URL') ? null : define('BASE_URL', $_SERVER['REQUEST_SCHEME'] . ':' . DS . DS . $_SERVER['HTTP_HOST'] . DS . SITE_HOST . DS);
-		defined('ALBUM') ? null : define('ALBUM', '');
-		defined('ALBUM_KEY') ? null : define('ALBUM_KEY', '');
-		defined('DB_HOST') ? null : define('DB_HOST', '');
-		defined('DB_USER') ? null : define('DB_USER', '');
-		defined('DB_PSWD') ? null : define('DB_PSWD', '');
-		defined('DB_NAME') ? null : define('DB_NAME', '');
+		defined('ALBUM') ? null : define('ALBUM', 'NIGERIANS');
+		defined('ALBUM_KEY') ? null : define('ALBUM_KEY', '70e8fb7ff1ff861048f076588e8f728c7a9af72e9054d0f925d57d0e75b95776');
+		defined('DB_HOST') ? null : define('DB_HOST', 'localhost');
+		defined('DB_USER') ? null : define('DB_USER', 'root');
+		defined('DB_PSWD') ? null : define('DB_PSWD', '*1wAY2HvN');
+		defined('DB_NAME') ? null : define('DB_NAME', 'ImageMatcher');
 		break;
 	case 'imagematcher.local':
 		defined('SITE_HOST') ? null : define('SITE_HOST', 'imagematcher.local');
 		defined('ROOT_DIR') ? null : define('ROOT_DIR', $_SERVER['DOCUMENT_ROOT'] . DS);
 		defined('BASE_URL') ? null : define('BASE_URL', 'http:' . DS . DS . $_SERVER['HTTP_HOST'] . DS);
-		defined('ALBUM') ? null : define('ALBUM', '');
-		defined('ALBUM_KEY') ? null : define('ALBUM_KEY', '');
-		defined('DB_HOST') ? null : define('DB_HOST', '');
-		defined('DB_USER') ? null : define('DB_USER', '');
-		defined('DB_PSWD') ? null : define('DB_PSWD', '');
-		defined('DB_NAME') ? null : define('DB_NAME', '');
+		defined('ALBUM') ? null : define('ALBUM', 'NIGERIANS');
+		defined('ALBUM_KEY') ? null : define('ALBUM_KEY', '70e8fb7ff1ff861048f076588e8f728c7a9af72e9054d0f925d57d0e75b95776');
+		defined('DB_HOST') ? null : define('DB_HOST', 'localhost');
+		defined('DB_USER') ? null : define('DB_USER', 'root');
+		defined('DB_PSWD') ? null : define('DB_PSWD', '*1wAY2HvN');
+		defined('DB_NAME') ? null : define('DB_NAME', 'ImageMatcher');
 		break;
 	default:
 		break;
