@@ -1,0 +1,9 @@
+<IfModule rewrite_module>
+
+	RewriteEngine On
+	RewriteRule ^(/)?$ public/index.php
+	RewriteRule ^([a-z]+)$ public/$1.php [QSA]
+	RewriteRule ^([-a-z0-9]+)\.(css|js)$ $2/$1.min.$2
+	RewriteRule ^([-0-9a-z]+)\.(jpg|png|gif)$ img/$1.$2
+	
+</IfModule>
