@@ -122,8 +122,8 @@ class Register {
 	}
 
 	public function response() {
-		$register = $this->register();
-		$response = array('status' => (($signup === true) ? 'success' : 'failure'), 'message' => (($signup === true) ? 'Account created successfully. We have emailed credentials to the email address provided.' : $register));
+		$register = $this->registerPersonnel();
+		$response = array('status' => (($register === true) ? 'success' : 'failure'), 'message' => (($register === true) ? 'Account created successfully. We have emailed credentials to the email address provided.' : $register));
 		return $response;
 	}
 
