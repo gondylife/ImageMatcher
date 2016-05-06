@@ -2,6 +2,8 @@
 
 namespace App\User;
 use App\Libs\Keygen;
+use App\Libs\Utils;
+use App\Core\Database;
 
 class Register {
 
@@ -188,6 +190,8 @@ class Register {
 		$response = $this->response();
 		if ($response['status'] === 'success') {
 			$mail = $this->sendMail();
+			//Add an audit trail for successful registration here.
+			//Save to the Audit table, parameters include: Action, By, DateTime
 		}
 		return array('message' => $response['message'], 'status' => $response['status'], 'sendmail' => isset($mail) ? $mail : "Mail function not called");
 	}
