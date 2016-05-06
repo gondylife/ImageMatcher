@@ -7,8 +7,6 @@ use \Exception;
 
 class Login {
 
-	const RESULT_ASSOC = 2;
-
 	private $policeid, $secret;
 
 	public function __construct () {
