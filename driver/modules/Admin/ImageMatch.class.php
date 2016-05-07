@@ -86,20 +86,6 @@ class ImageMatch {
 		return $response;
 	}
 
-	private function detectFace($data) {
-		$urlFaceDetect = "".$urlCore.$endpointFaceDetect;
-		$response = Unirest\Request::post($urlFaceDetect,
-		  	array(
-		    	"X-Mashape-Key" => "6eausabVMPmshTIsH6RFSxyjGtDDp1PeoG8jsn7XOLkw57PKs5"
-		  	),
-		  	array(
-		    	"files" => Unirest\file::add(""),
-		    	"urls" => $data['imageURL']
-		  	)
-		);
-		return $response;
-	}
-
 	private function recognizeFace($data) {
 		$urlFaceRecognize = "".$urlCore.$endpointFaceRecognize;
 		$response = Unirest\Request::post($urlFaceRecognize,
