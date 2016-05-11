@@ -9,7 +9,6 @@ class Register {
 
 	const SUBJECT = 'Image Matching System Credentials';
 	private static $table = "Access";
-
 	private $firstname, $lastname, $policeid, $emailaddress, $role, $secret;
 
 	public function __construct() {
