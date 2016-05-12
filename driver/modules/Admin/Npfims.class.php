@@ -1,0 +1,58 @@
+<?php
+
+namespace App\Admin;
+use App\Admin\ImageMatch;
+use App\Admin\ConsumeImageMatch;
+use App\User\Register;
+use App\User\Login;
+
+class Npfims {
+
+	public static function register() {
+		die(json_encode((new Register)->register()));
+	}
+
+	public static function login() {
+		return (new Login)->login();
+	}
+
+	public static function newEntry() {
+		return (new ConsumeImageMatch)->addNewEntry();
+	}
+
+	public static function rebuildAlbum() {
+		return (new ImageMatch)->rebuildAlbum();
+	}
+
+	public static function viewEntry($data) {
+		return (new ImageMatch)->viewEntry($data);
+	}
+
+	public static function updateImageCount($data) {
+		return (new ConsumeImageMatch)->updateImageCount($data);
+	}
+
+	public static function retrieveEntry($data) {
+		return (new ConsumeImageMatch)->retrieveEntry($data);
+	}
+
+	public static function updateEntryDetails($data) {
+		return (new ConsumeImageMatch)->editEntry($data);
+	}
+
+	public static function retrieveAllPersonnels() {
+		return (new ConsumeImageMatch)->retrieveAllPersonnels();
+	}
+
+	public static function retrieveAllEntries() {
+		return (new ConsumeImageMatch)->retrieveAllEntries();
+	}
+
+	public static function logout() {
+		unset($_SESSION['PID']);
+		return (!isset($_SESSION['PID'])) ? array('redirect' => BASE_URL) : false;
+	}
+
+}
+
+?>

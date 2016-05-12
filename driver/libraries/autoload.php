@@ -20,7 +20,7 @@ spl_autoload_register(function ($class) {
 
 spl_autoload_register(function ($class) {
 	if (preg_match('/^Unirest\/(.+)$/', str_replace('\\', '/', $class), $match)) {
-		$path = MODS_DIR."/Helpers/unirest-php/src/{$match[1]}.php";
+		$path = MODS_DIR."Helpers/unirest-php/src/Unirest/{$match[1]}.php";
 		if (file_exists($path) && is_file($path)) {
 			require $path;
 		}
