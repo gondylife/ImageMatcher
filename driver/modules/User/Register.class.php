@@ -7,7 +7,7 @@ use App\Core\Database;
 
 class Register {
 
-	const SUBJECT = 'Image Matching System Credentials';
+	const SUBJECT = 'NPF Image Matching System';
 	private static $table = "Access";
 	private $firstname, $lastname, $policeid, $emailaddress, $role, $secret;
 
@@ -55,7 +55,7 @@ class Register {
 
 		if ($this->checkPoliceID() === true AND $this->checkEmail() === true) {
 
-			$this->$secret = md5(implode(':', [$policeid, $email, Keygen\generateRandKey(10)]));
+			$this->secret = Keygen\generateRandKey(10);
 			$datetime = date('Y-m-d H:i:s', time());
 			$data = array(
 				'Firstname' => $firstname,
@@ -63,8 +63,9 @@ class Register {
 				'PoliceID' => $policeid,
 				'EmailAddress' => $emailaddress,
 				'Role' => $role,
-				'Secret' => $this->$secret,
+				'Secret' => $this->secret,
 				'DateTime' => $datetime
+				'Status' => 1
 			);
 
 			$insert = $db->query(Utils\insertQueryFromArray($data, self::$table));
@@ -72,7 +73,7 @@ class Register {
 			if ($insert) {
 				return true;
 			} else {
-				return 'Account creation successful.';
+				return 'Account creation failed.';
 			}
 		} else {
 			return $this->checkEmail();
@@ -117,7 +118,7 @@ class Register {
 
 	private function emailExists() {
 		global $db;
-		$emailaddress = $this->sanitized['email'];
+		$emailaddress = $this->sanitized['emailaddress'];
 		$check = $db->query("SELECT EmailAddress FROM Access WHERE EmailAddress = '{$emailaddress}' LIMIT 1");
 		return ($db->countResult($check) == 1) ? true : false;
 	}
@@ -131,7 +132,7 @@ class Register {
 	private function setHeaders($headers = array()) {
 		$this->headers = "";
 		$mailheaders = array(
-			"From" => "NPF Image Matching System <hello@npfims.com>",
+			"From" => "NPFIMS <hello@npfims.com>",
 			"MIME-Version" => "1.0",
 			"Content-Type" => "text/html; charset=ISO-8859-1",
 		);
@@ -169,8 +170,8 @@ class Register {
 		$message .= '<p>Welcome to NPF Image Matching System.</p>';
 		$message .= '<p>Find your login credentials below:</p>';
 		$message .= '<p>URL: <a href="http://npfims.com">http://npfims.com</a></p>';
-		$message .= '<p>Secret: ' . $this->$secret . '</p>';
-		$message .= '<p>Visit the URL(above), enter your police ID and secret(above) to gain access </p>';
+		$message .= '<p>Secret: ' . $this->secret . '</p>';
+		$message .= '<p>Visit the URL(above), enter your police ID and the secret(above) to gain access. </p>';
 		$message .= '<p>&nbsp;</p>';
 		$message .= '<p>Best Wishes,</p>';
 		$message .= '<p>The NPF IMS Team.</p>';
@@ -193,6 +194,30 @@ class Register {
 			//Save to the Audit table, parameters include: Action, By, DateTime
 		}
 		return array('message' => $response['message'], 'status' => $response['status'], 'sendmail' => isset($mail) ? $mail : "Mail function not called");
+	}
+
+	public function deactivate($data) {
+		global $db;
+		$update = $db->query("UPDATE Access SET Status = 0 WHERE PoliceID = '{$data['policeid']}' LIMIT 1");
+		//Add an audit trail for successful deactivation here.
+		//Save to the Audit table, parameters include: Action, By, DateTime
+		return ($update === true) ? true : false;
+	}
+
+	public function activate($data) {
+		global $db;
+		$update = $db->query("UPDATE Access SET Status = 1 WHERE PoliceID = '{$data['policeid']}' LIMIT 1");
+		//Add an audit trail for successful activation here.
+		//Save to the Audit table, parameters include: Action, By, DateTime
+		return ($update === true) ? true : false;
+	}
+
+	public function delete($data) {
+		global $db;
+		$delete = $db->query("DELETE FROM Access WHERE PoliceID = '{$data['policeid']}' LIMIT 1");
+		//Add an audit trail for successful deletion here.
+		//Save to the Audit table, parameters include: Action, By, DateTime
+		return ($delete === true) ? true : false;
 	}
 }
 

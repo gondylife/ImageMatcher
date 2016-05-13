@@ -48,6 +48,18 @@ class Npfims {
 		return (new ConsumeImageMatch)->retrieveAllEntries();
 	}
 
+	public static function deactivate($data) {
+		return (new Register)->deactivate($data);
+	}
+
+	public static function activate($data) {
+		return (new Register)->activate($data);
+	}
+
+	public static function delete($data) {
+		return (new Register)->delete($data);
+	}
+
 	public static function logout() {
 		unset($_SESSION['PID']);
 		return (!isset($_SESSION['PID'])) ? array('redirect' => BASE_URL) : false;
