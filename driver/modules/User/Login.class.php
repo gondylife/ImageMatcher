@@ -3,8 +3,6 @@
 namespace App\User;
 use App\Core\Database;
 
-use \Exception;
-
 class Login {
 
 	private $policeid, $secret;
@@ -44,11 +42,11 @@ class Login {
 
 		if ($this->checkPoliceID() === true) {
 			$time = date('Y-m-d H:i:s', time());
-			$login = $db->query("SELECT * FROM Access WHERE PoliceID = '{$policeid}' AND Secret = '{$secret}'");
+			$login = $db->query("SELECT * FROM Access WHERE PoliceID = '{$policeid}' AND Secret = '{$secret}' AND SECRET = '1'");
 			if ($db->countResult($login) === 1) {
 				return true;
 			} else {
-				return 'Login Failed. You may not have access yet. Consult the admin.';
+				return 'Login Failed. You may not have access yet or your account is inactive. Consult the admin.';
 			}
 		} else {
 			return $this->checkPoliceID();
@@ -67,6 +65,7 @@ class Login {
 	public function response () {
 		$login = $this->loginPersonnel();
 		$response = array('status' => (($login === true) ? 'success' : 'failure'), 'message' => (($login === true) ? 'Login Successful.' : $login));
+		($login === true) && $response = array_merge($response, array('PoliceID' => $this->policeid));
 		return $response;
 	}
 

@@ -17,7 +17,7 @@ class Register {
 	}
 
 	private function fetchData() {
-		if ($_POST) {
+		if ($_POST AND isset($_POST['firstname'])) {
 			foreach ($_POST as $field => $value) {
 				if (!isset($value) || empty($value)) {
 					return false;
@@ -63,11 +63,11 @@ class Register {
 				'PoliceID' => $policeid,
 				'EmailAddress' => $emailaddress,
 				'Role' => $role,
-				'Secret' => $this->secret,
-				'DateTime' => $datetime
-				'Status' => 1
+				'Secret' => md5($this->secret),
+				'DateTime' => $datetime,
+				'Status' => '1'
 			);
-
+			
 			$insert = $db->query(Utils\insertQueryFromArray($data, self::$table));
 
 			if ($insert) {
@@ -167,7 +167,7 @@ class Register {
 		$message = '<html><body>';
 		$message .= '<p>Hello ' . $this->firstname . ',</p>';
 		$message .= '<p>&nbsp;</p>';
-		$message .= '<p>Welcome to NPF Image Matching System.</p>';
+		$message .= '<p>Welcome to Nigerian Police Force Image Matching System.</p>';
 		$message .= '<p>Find your login credentials below:</p>';
 		$message .= '<p>URL: <a href="http://npfims.com">http://npfims.com</a></p>';
 		$message .= '<p>Secret: ' . $this->secret . '</p>';
@@ -198,7 +198,7 @@ class Register {
 
 	public function deactivate($data) {
 		global $db;
-		$update = $db->query("UPDATE Access SET Status = 0 WHERE PoliceID = '{$data['policeid']}' LIMIT 1");
+		$update = $db->query("UPDATE Access SET Status = '0' WHERE PoliceID = '{$data}' LIMIT 1");
 		//Add an audit trail for successful deactivation here.
 		//Save to the Audit table, parameters include: Action, By, DateTime
 		return ($update === true) ? true : false;
@@ -206,7 +206,7 @@ class Register {
 
 	public function activate($data) {
 		global $db;
-		$update = $db->query("UPDATE Access SET Status = 1 WHERE PoliceID = '{$data['policeid']}' LIMIT 1");
+		$update = $db->query("UPDATE Access SET Status = '1' WHERE PoliceID = '{$data}' LIMIT 1");
 		//Add an audit trail for successful activation here.
 		//Save to the Audit table, parameters include: Action, By, DateTime
 		return ($update === true) ? true : false;
@@ -214,7 +214,7 @@ class Register {
 
 	public function delete($data) {
 		global $db;
-		$delete = $db->query("DELETE FROM Access WHERE PoliceID = '{$data['policeid']}' LIMIT 1");
+		$delete = $db->query("DELETE FROM Access WHERE PoliceID = '{$data}' LIMIT 1");
 		//Add an audit trail for successful deletion here.
 		//Save to the Audit table, parameters include: Action, By, DateTime
 		return ($delete === true) ? true : false;

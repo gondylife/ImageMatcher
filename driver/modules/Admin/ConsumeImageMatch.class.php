@@ -7,6 +7,7 @@ use App\Libs\Keygen;
 
 class ConsumeImageMatch {
 
+	const RESULT_ASSOC = 2;
 	private $firstname, $lastname, $othername, $dob, $sex, $phonenumber, $emailaddress, $homeaddress, $occupation, $workplace, $workaddress, $imageURL;
 
 	public function __construct() {
@@ -89,7 +90,7 @@ class ConsumeImageMatch {
 	}
 
 	public function addMoreImages($dataArrray) {
-		for ($i = 0; $i < count($dataArray['dataset']); $1++) {
+		for ($i = 0; $i < count($dataArray['dataset']); $i++) {
 			//Check if the image is a file or url and pass it to train album accordingly
 			$data = array(
 				'id' => $dataArray['id'],
@@ -102,7 +103,7 @@ class ConsumeImageMatch {
 
 	public function retrieveAllPersonnels() {
 		global $db;
-		$retrieve = "SELECT * FROM Access";
+		$retrieve = "SELECT Firstname, Lastname, PoliceID, EmailAddress, Role, DateTime, Status FROM Access";
 		$fetch = $db->execute($retrieve, $format = self::RESULT_ASSOC);
 		return $fetch;
 	}

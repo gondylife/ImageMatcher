@@ -6,7 +6,7 @@ require_once('../config.php');
 <html>
 	<head></head>
 	<body>
-		<form method="POST" id="form_register">
+		<form method="POST" id="form_newpersonnel">
 		<input type="text" placeholder="firstname" id="firstname" name="firstname" required /><br/><br/>
 		<input type="text" placeholder="lastname" id="lastname" name="lastname" required /><br/><br/>
 		<input type="text" placeholder="policeid" id="policeid" name="policeid" required /><br/><br/>
