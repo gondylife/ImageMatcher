@@ -8,7 +8,7 @@ use App\Libs\Keygen;
 class ConsumeImageMatch {
 
 	const RESULT_ASSOC = 2;
-	private $firstname, $lastname, $othername, $dob, $sex, $phonenumber, $emailaddress, $homeaddress, $occupation, $workplace, $workaddress, $imageURL;
+	private $firstname, $lastname, $othername, $dob, $sex, $phonenumber, $emailaddress, $homeaddress, $occupation, $workplace, $workaddress, $image1, $image2;
 
 	public function __construct() {
 		$headers = apache_request_headers();
@@ -33,7 +33,8 @@ class ConsumeImageMatch {
 			$this->occupation = $_POST['occupation'];
 			$this->workplace = $_POST['workplace'];
 			$this->workaddress = $_POST['workaddress'];
-			$this->imageURL = $_POST['imageURL'];
+			$this->image1 = $_POST['image1'];
+			$this->image2 = $_POST['image2'];
 			$this->sanitizeData();
 		}
 	}
@@ -51,12 +52,13 @@ class ConsumeImageMatch {
 		$this->sanitized['occupation'] = $db->escapeValue($this->occupation);
 		$this->sanitized['workplace'] = $db->escapeValue($this->workplace);
 		$this->sanitized['workaddress'] = $db->escapeValue($this->workaddress);
-		$this->sanitized['imageURL'] = $db->escapeValue($this->imageURL);
+		$this->sanitized['image1'] = $db->escapeValue($this->image1);
+		$this->sanitized['image2'] = $db->escapeValue($this->image2);
 	}
 
 	public function addNewEntry() {
 		global $db;
-		if (empty($this->firstname) || empty($this->lastname) || empty($this->dob) || empty($this->sex) || empty($this->phonenumber) || empty($this->emailaddress) || empty($this->homeaddress) || empty($this->imageURL)) {
+		if (empty($this->firstname) || empty($this->lastname) || empty($this->dob) || empty($this->sex) || empty($this->phonenumber) || empty($this->emailaddress) || empty($this->homeaddress) || empty($this->image1) || empty($this->image2)) {
 			return 'Please fill-up required fields.';
 		}
 
@@ -71,18 +73,30 @@ class ConsumeImageMatch {
 		$occupation = $this->sanitized['occupation'];
 		$workplace = $this->sanitized['workplace'];
 		$workaddress = $this->sanitized['workaddress'];
-		$imageURL = $this->sanitized['imageURL'];
+		$image1 = $this->sanitized['image1'];
+		$image2 = $this->sanitized['image2'];
 
 		if ($this->checkEmail() === true AND $this->checkPhonenumber() === true) {
 			$uniqueid = md5(implode(':', [$firstname, $emailaddress, Keygen\generateRandKey(32)]));
 
-			$insert = $db->query("INSERT INTO Data(UniqueID, Firstname, Lastname, Othername, DOB, Sex, Phonenumber, EmailAddress, HomeAddress, Occupation, WorkPlace, WorkAddress) VALUES('{$uniqueid}', '{$firstname}', '{$lastname}', '{$othername}', '{$dob}', '{$sex}', '{$phonenumber}', '{$emailaddress}', '{$homeaddress}', '{$occupation}', '{$workplace}', '{$workaddress}')");
+			$insert = $db->query("INSERT INTO Data(UniqueID, Firstname, Lastname, Othername, DOB, Sex, Phonenumber, EmailAddress, HomeAddress, Occupation, WorkPlace, WorkAddress, ImageCount) VALUES('{$uniqueid}', '{$firstname}', '{$lastname}', '{$othername}', '{$dob}', '{$sex}', '{$phonenumber}', '{$emailaddress}', '{$homeaddress}', '{$occupation}', '{$workplace}', '{$workaddress}', 2)");
 			if ($insert === true) {
-				$data = array(
+				$dataArray = array(
 					'id' => $uniqueid,
-					'imageURL' => $imageURL
+					'image' => array($image1, $image2)
 				);
-				return $createAlbumEntry = (new ImageMatch)->trainAlbum($data);
+				for ($i = 0; $i < count($dataArray['image']); $i++) {
+					//Check if the image is a file or url and pass it to train album accordingly
+					$data = array(
+						'id' => $dataArray['id'],
+						'imageURL' => $dataArray['image'][$i]
+					);
+					$createAlbumEntry = (new ImageMatch)->trainAlbum($data);
+				}
+				// $response[] = json_decode(json_encode($createAlbumEntry), true);
+				//return a proper success failure variable to frontend
+				(new ImageMatch)->rebuildAlbum();
+				return true;
 			} else {
 				return false;
 			}
@@ -160,7 +174,7 @@ class ConsumeImageMatch {
 
 	private function emailExists() {
 		global $db;
-		$emailaddress = $this->sanitized['email'];
+		$emailaddress = $this->sanitized['emailaddress'];
 		$check = $db->query("SELECT EmailAddress FROM Data WHERE EmailAddress = '{$emailaddress}' LIMIT 1");
 		return ($db->countResult($check) == 1) ? true : false;
 	}
@@ -179,7 +193,7 @@ class ConsumeImageMatch {
 
 	private function phonenumberExists() {
 		global $db;
-		$policeid = $this->sanitized['policeid'];
+		$phonenumber = $this->sanitized['phonenumber'];
 		$check = $db->query("SELECT Phonenumber FROM Data WHERE Phonenumber = '{$phonenumber}' LIMIT 1");
 		return ($db->countResult($check) == 1) ? true : false;
 	}

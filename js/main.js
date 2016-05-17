@@ -83,4 +83,25 @@ $(document).ready(function() {
       });
   });
 
+  $('#form_newentry').submit(function (e) {
+    e.preventDefault();
+    var self = $(this), fetch = {'firstname': String($('#firstname').val()), 'lastname': String($('#lastname').val()), 'othername': String($('#othername').val()), 'dob': String($('#dob').val()), 'sex': String($('#sex').val()), 'phonenumber': String($('#phonenumber').val()), 'emailaddress': String($('#emailaddress').val()), 'homeaddress': String($('#homeaddress').val()), 'occupation': String($('#occupation').val()), 'workplace': String($('#workplace').val()), 'workaddress': String($('#workaddress').val()), 'image1': String($('#image1').val()), 'image2': String($('#image2').val())}, data = [], ready = true;
+    $.each(fetch, function (key, val) {
+      data.push(key + '=' + escape(val));
+      if (val.trim().length === 0) {
+        ready = false;
+      }
+    });
+    (ready) && $.post('executenewentry', data.join('&'), function (data) {
+      var data = JSON.parse(data); //responseElem = self.find('#alert-container');
+      // if (data['status'] === "failure") {
+      //   responseElem.removeClass('alert-success').addClass('alert-danger');
+      // } else if (data['status'] === "success") {
+      //   responseElem.removeClass('alert-danger').addClass('alert-success');
+      // }
+      // responseElem.html(data['message']);
+      console.log(data);
+    });
+  });
+
 });
