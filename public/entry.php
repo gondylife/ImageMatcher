@@ -13,41 +13,31 @@ $entries = Npfims::retrieveAllEntries();
 		<table style="border: 1px solid black;">
 			<thead>
 				<tr>
-					<th>Full name</th>
-					<th>Police ID</th>
+					<th>First name</th>
+					<th>Last name</th>
+					<th>Other name</th>
+					<th>DOB</th>
+					<th>Sex</th>
+					<th>Phone Number</th>
 					<th>Email address</th>
-					<th>Role</th>
-					<th>Access Date</th>
-					<th>Status</th>
 					<th>Action</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php 
-					foreach ($personnels as $id => $Details) {
-						if ($Details['Role'] === 'A') {
-							$role = 'Admin';
-						}
-						if ($Details['Role'] === 'P') {
-							$role = 'Police';
-						}
-						if ($Details['Status'] === '1') {
-							$status = 'Active';
-							$button = '<button type="submit" class="deactivate-personnel" data-personnel="'.$Details['PoliceID'].'" title="Deactivate Personnel">Deactivate</button>';
-						}
-						if ($Details['Status'] === '0') {
-							$status = 'Inactive';
-							$button = '<button type="submit" class="activate-personnel" data-personnel="'.$Details['PoliceID'].'" title="Activate Personnel">Activate</button>';
-						}
+					foreach ($entries as $id => $Details) {
+						$buttonEdit = '<button type="submit" class="edit-entry" data-entry="'.$Details['UniqueID'].'" title="Edit Entry"><a data-toggle="modal" data-target="#editModal">Edit</a></button>';
+						$buttonTrain = '<button type="submit" class="train-album" data-entry="'.$Details['UniqueID'].'" title="Train Album"><a data-toggle="modal" data-target="#trainModal">Train</a></button>';
 				?>
 				<tr>
-					<td><?=$Details['Firstname'].' ' .$Details['Lastname'];?></td>
-					<td><?=$Details['PoliceID'];?></td>
+					<td><?=$Details['Firstname'];?></td>
+					<td><?=$Details['Lastname'];?></td>
+					<td><?=$Details['Othername'];?></td>
+					<td><?=$Details['DOB'];?></td>
+					<td><?=$Details['Sex'];?></td>
+					<td><?=$Details['Phonenumber'];?></td>
 					<td><?=$Details['EmailAddress'];?></td>
-					<td><?=$role;?></td>
-					<td><?=$Details['DateTime'];?></td>
-					<td><?=$status;?></td>
-					<td><?=$button;?>&nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="delete-personnel" data-personnel="<?=$Details['PoliceID'];?>" title="Delete Personnel">Delete</button></td>
+					<td><?=$buttonEdit;?>&nbsp;&nbsp;&nbsp;&nbsp;<?=$buttonTrain;?></td>
 				</tr>
 				<?php
 					}
@@ -55,7 +45,10 @@ $entries = Npfims::retrieveAllEntries();
 			</tbody>
 		</table>
 
+		<?php require_once(INCS_DIR.'editentry.inc.php'); ?>
+		<?php require_once(INCS_DIR.'train.inc.php'); ?>
 		<script src="jquery.js"></script>
+		<script src="bootstrap.js"></script>
 		<script src="main.js"></script>
 	</body>
 </html>

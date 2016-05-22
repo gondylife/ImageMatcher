@@ -16,7 +16,7 @@ class ConsumeImageMatch {
 	}
 
 	private function fetchData() {
-		if ($_POST) {
+		if ($_POST AND isset($_POST['firstname']) AND isset($_POST['lastname']) AND isset($_POST['sex'])) {
 			foreach ($_POST as $field => $value) {
 				if (!isset($value) || empty($value)) {
 					return false;
@@ -131,14 +131,14 @@ class ConsumeImageMatch {
 
 	public function retrieveEntry($data) {
 		global $db;
-		$retrieve = $db->query("SELECT * FROM Data WHERE UniqueID = '{$data['id']}'");
+		$retrieve = $db->query("SELECT * FROM Data WHERE UniqueID = '{$data}'");
 		$fetch = $db->fetchResult($retrieve, Database::RESULT_ASSOC);
 		return $fetch;
 	}
 
 	public function editEntry($data) {
 		global $db;
-		$update = $db->query("UPDATE Data SET Firstname = '{$data['firstname']}', Lastname = '{$data['lastname']}', Othername = '{$data['othername']}', DOB = '{$data['dob']}', Sex = '{$data['sex']}', Phonenumber = '{$data['phonenumber']}', EmailAddress = '{$data['emailaddress']}', HomeAddress = '{$data['homeaddress']}', Occupation = '{$data['occupation']}', WorkPlace = '{$data['workplace']}', WorkAddress = '{$data['workaddress']}' WHERE UniqueID = '{$data['id']}'");
+		$update = $db->query("UPDATE Data SET Othername = '{$data['othername']}', DOB = '{$data['dob']}', Phonenumber = '{$data['phonenumber']}', EmailAddress = '{$data['emailaddress']}', HomeAddress = '{$data['homeaddress']}', Occupation = '{$data['occupation']}', WorkPlace = '{$data['workplace']}', WorkAddress = '{$data['workaddress']}' WHERE UniqueID = '{$data['id']}'");
 		return ($update === true) ? true : false;
 	}
 
