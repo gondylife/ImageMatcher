@@ -8,7 +8,9 @@ $entries = Npfims::retrieveAllEntries();
 
 ?>
 <html>
-	<head></head>
+	<head>
+		<link href="bootstrap.css" rel="stylesheet">
+	</head>
 	<body>
 		<table style="border: 1px solid black;">
 			<thead>

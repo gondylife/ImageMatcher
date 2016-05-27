@@ -144,4 +144,50 @@ $(document).ready(function() {
     });
   });
 
+  $('button.train-album').each(function () {
+    var self = $(this), ref = String(self.data('entry'));
+    $(this).click(function (e) {
+      e.preventDefault();
+      $('#form_trainalbum').append('<input type="hidden" class="entryid" name="entryid" value="'+ ref +'" />');
+    });
+  });
+
+  var max_fields = 10, wrapper = $(".imageurl_fields"), add_button = $(".addimage_field");
+  var x = 1;
+  $(add_button).click(function(e) {
+    e.preventDefault();
+    if (x < max_fields) {
+      x++;
+      $(wrapper).append('<div><input type="text" placeholder="Image URL" class="imageurlfield" name="imageURL[]" /><a href="#" class="removeimage_field">Remove</a></div>');
+    }
+  }); 
+  $(wrapper).on("click", ".removeimage_field", function(e){
+    e.preventDefault();
+    $(this).parent('div').remove();
+    x--;
+  });
+
+  $('#form_trainalbum').submit(function (e) {
+    e.preventDefault();
+    var self = $(this), images = [], data = [], ready = true;
+    $.each($('#form_trainalbum input[class="imageurlfield"]'), function () {
+      images.push(escape($(this).val()));
+      if ($(this).val().trim().length === 0) {
+        ready = false;
+      }
+    });
+    data['id'] = String($('#form_trainalbum input[name="entryid"]').val());
+    data['dataset'] = images;
+    (ready) && $.post('executetrain', 'data='+escape(JSON.stringify(data)), function (data) {
+      var data = JSON.parse(data); //responseElem = self.find('#alert-container');
+      // if (data['status'] === "failure") {
+      //   responseElem.removeClass('alert-success').addClass('alert-danger');
+      // } else if (data['status'] === "success") {
+      //   responseElem.removeClass('alert-danger').addClass('alert-success');
+      // }
+      // responseElem.html(data['message']);
+      console.log(data);
+    });
+  });
+
 });

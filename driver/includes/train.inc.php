@@ -6,9 +6,13 @@
 	        	<h4 class="modal-title" id="myModalLabel">NPFIMS Train Album</h4>
 	      	</div>
 			<form method="POST" id="form_trainalbum">
-				<input type="text" placeholder="Enter number of images" id="number" name="number" value="1" /><br/><br/>
-				<input type="text" placeholder="" id="" name="" /><br/><br/>
-				<br/><br/>
+				<div class="imageurl_fields">
+					<button type="submit" class="addimage_field">Add More</button><br/>
+					<div>
+						<input type="text" placeholder="Image URL" class="imageurlfield" name="imageURL[]" />
+					</div>
+				</div>
+				<br/><br/><br/><br/>
 				<button type="submit">Train Album</button>
 			</form>
 		</div>
