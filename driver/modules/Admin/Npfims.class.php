@@ -48,6 +48,18 @@ class Npfims {
 		return (new ConsumeImageMatch)->retrieveAllEntries();
 	}
 
+	public static function addMoreImages($dataArrray) {
+		return (new ConsumeImageMatch)->addMoreImages($dataArrray);
+	}
+
+	public static function detectFace($data) {
+		return (new ConsumeImageMatch)->detectFace($data);
+	}
+
+	public static function recognizeFace($data) {
+		return (new ConsumeImageMatch)->recognizeFace($data);
+	}
+
 	public static function deactivate($data) {
 		return (new Register)->deactivate($data);
 	}

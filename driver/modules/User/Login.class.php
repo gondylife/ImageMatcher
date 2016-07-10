@@ -42,11 +42,11 @@ class Login {
 
 		if ($this->checkPoliceID() === true) {
 			$time = date('Y-m-d H:i:s', time());
-			$login = $db->query("SELECT * FROM Access WHERE PoliceID = '{$policeid}' AND Secret = '{$secret}' AND SECRET = '1'");
+			$login = $db->query("SELECT * FROM Access WHERE PoliceID = '{$policeid}' AND Secret = '{$secret}' AND Status = '1'");
 			if ($db->countResult($login) === 1) {
 				return true;
 			} else {
-				return 'Login Failed. You may not have access yet or your account is inactive. Consult the admin.';
+				return 'Login Failed. You may not have access yet or your account is inactive. Contact the admin.';
 			}
 		} else {
 			return $this->checkPoliceID();
@@ -62,10 +62,25 @@ class Login {
 		}
 	}
 
+	private function getRedirectURL () {
+		global $db;
+		$policeid = $this->sanitized['policeid'];
+		$retriveRole = $db->query("SELECT Role FROM Access WHERE PoliceID = '{$policeid}' LIMIT 1");
+		$role = $db->fetchResult($retriveRole, Database::RESULT_ASSOC)['Role'];
+
+		if ($role === 'A') {
+			return BASE_URL.'admin';
+		}
+		if ($role === 'P') {
+			return BASE_URL.'internal';
+		}
+	}
+
 	public function response () {
 		$login = $this->loginPersonnel();
 		$response = array('status' => (($login === true) ? 'success' : 'failure'), 'message' => (($login === true) ? 'Login Successful.' : $login));
-		($login === true) && $response = array_merge($response, array('PoliceID' => $this->policeid));
+		$redirect = $this->getRedirectURL();
+		($login === true) && $response = array_merge($response, array('PoliceID' => $this->policeid,  'redirect' => $redirect));
 		return $response;
 	}
 

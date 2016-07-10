@@ -1,4 +1,47 @@
 $(document).ready(function() {
+  $("#menu-toggle").click(function(e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+  });
+  $("#menu-toggle-2").click(function(e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled-2");
+    $('#menu ul').hide();
+  });
+
+  $("#admin-content-div").html($('#personnel-content').html());
+   
+  function initMenu() {
+    $('#menu ul').hide();
+    $('#menu ul').children('.current').parent().show();
+    $('#menu ul:first').show();
+    $('#menu li a').click(
+      function() {
+        var checkElement = $(this).next();
+        if((checkElement.is('ul')) && (checkElement.is(':visible'))) {
+          return false;
+        }
+        if((checkElement.is('ul')) && (!checkElement.is(':visible'))) {
+          $('#menu ul:visible').slideUp('normal');
+          checkElement.slideDown('normal');
+          return false;
+        }
+      }
+    );
+  }
+  $(document).ready(function() {initMenu();});
+  $("#menu > li#entry-menu-item > a").click(function(e) {
+    $("li#personnel-menu-item").removeClass('active');
+    $("li#entry-menu-item").addClass('active');
+
+    $("#admin-content-div").html($('#entry-content').html());
+  });
+  $("#menu > li#personnel-menu-item > a").click(function(e) {
+    $("li#entry-menu-item").removeClass('active');
+    $("li#personnel-menu-item").addClass('active');
+
+    $("#admin-content-div").html($('#personnel-content').html());
+  });
 
   $('#form_newpersonnel').submit(function (e) {
     e.preventDefault();
@@ -21,8 +64,13 @@ $(document).ready(function() {
     });
   });
 
+  $('.login-input').on('focus', function() {
+    $('.login').addClass('focused');
+  });
+
   $('#form_login').submit(function (e) {
     e.preventDefault();
+    $('.login').removeClass('focused').addClass('loading');
     var self = $(this), fetch = {'policeid': String($('#policeid').val()), 'secret': String($('#secret').val())}, data = [], ready = true;
     $.each(fetch, function (key, val) {
       data.push(key + '=' + escape(val));
@@ -31,12 +79,15 @@ $(document).ready(function() {
       }
     });
     (ready) && $.post('executelogin', data.join('&'), function (data) {
-      var data = JSON.parse(data); //responseElem = self.find('#alert-container');
-      // if (data['status'] === "failure") {
-      //     responseElem.removeClass('alert-success').addClass('alert-danger').html(data['message']);
-      // } else if (data['status'] === "success") {
-      //     document.location = data['redirect'];
-      // }
+      var data = JSON.parse(data), responseElem = $('#login-alert-container');
+      if (data['status'] === "failure") {
+          $('.login').removeClass('loading');
+          responseElem.append('<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>');
+          responseElem.removeClass('alert-success').addClass('alert-danger').html(data['message']);
+      } else if (data['status'] === "success") {
+          $('.login').removeClass('loading');
+          document.location = data['redirect'];
+      }
       console.log(data);
     });
   });
@@ -169,7 +220,7 @@ $(document).ready(function() {
 
   $('#form_trainalbum').submit(function (e) {
     e.preventDefault();
-    var self = $(this), images = [], data = [], ready = true;
+    var self = $(this), images = [], data = {}, ready = true;
     $.each($('#form_trainalbum input[class="imageurlfield"]'), function () {
       images.push(escape($(this).val()));
       if ($(this).val().trim().length === 0) {
@@ -178,7 +229,7 @@ $(document).ready(function() {
     });
     data['id'] = String($('#form_trainalbum input[name="entryid"]').val());
     data['dataset'] = images;
-    (ready) && $.post('executetrain', 'data='+escape(JSON.stringify(data)), function (data) {
+    (ready) && $.post('executetrain', JSON.stringify(data), function (data) {
       var data = JSON.parse(data); //responseElem = self.find('#alert-container');
       // if (data['status'] === "failure") {
       //   responseElem.removeClass('alert-success').addClass('alert-danger');
