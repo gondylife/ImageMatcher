@@ -45,7 +45,7 @@ $(document).ready(function() {
 
   $('#form_newpersonnel').submit(function (e) {
     e.preventDefault();
-    var self = $(this), fetch = {'firstname': String($('#firstname').val()), 'lastname': String($('#lastname').val()), 'policeid': String($('#policeid').val()), 'emailaddress': String($('#emailaddress').val()), 'role': String($('#role').val())}, data = [], ready = true;
+    var self = $(this), fetch = {'firstname': String($('#pfirstname').val()), 'lastname': String($('#plastname').val()), 'policeid': String($('#ppoliceid').val()), 'emailaddress': String($('#pemailaddress').val()), 'role': String($('#prole').val())}, data = [], ready = true;
     $.each(fetch, function (key, val) {
       data.push(key + '=' + escape(val));
       if (val.trim().length === 0) {
@@ -53,14 +53,13 @@ $(document).ready(function() {
       }
     });
     (ready) && $.post('executenewpersonnel', data.join('&'), function (data) {
-      var data = JSON.parse(data); //responseElem = self.find('#alert-container');
-      // if (data['status'] === "failure") {
-      //   responseElem.removeClass('alert-success').addClass('alert-danger');
-      // } else if (data['status'] === "success") {
-      //   responseElem.removeClass('alert-danger').addClass('alert-success');
-      // }
-      // responseElem.html(data['message']);
-      console.log(data);
+      var data = JSON.parse(data), responseElem = $('#palert-container');
+      if (data['status'] === "failure") {
+        responseElem.removeClass('alert-success').addClass('alert-danger');
+      } else if (data['status'] === "success") {
+        responseElem.removeClass('alert-danger').addClass('alert-success');
+      }
+      responseElem.html(data['message']);
     });
   });
 
@@ -88,55 +87,51 @@ $(document).ready(function() {
           $('.login').removeClass('loading');
           document.location = data['redirect'];
       }
-      console.log(data);
     });
   });
 
   $('button.deactivate-personnel').each(function () {
     var self = $(this), ref = String(self.data('personnel')), data = 'deactivate-personnel=true&ref=' + escape(ref);
-    $(this).click(function (e) {
+    self.click(function (e) {
       e.preventDefault();
       $.post('executepersonnel', data, function (data) {
         data = JSON.parse(data);
-        // if (data.status === "success") {
-        //     window.location.reload();
-        // }
-        console.log(data);
+        if (data.status === "success") {
+            window.location.reload();
+        }
       });
     });
   });
 
   $('button.activate-personnel').each(function () {
     var self = $(this), ref = String(self.data('personnel')), data = 'activate-personnel=true&ref=' + escape(ref);
-    $(this).click(function (e) {
+    self.click(function (e) {
       e.preventDefault();
       $.post('executepersonnel', data, function (data) {
         data = JSON.parse(data);
-        // if (data.status === "success") {
-        //     window.location.reload();
-        // }
-        console.log(data);
+        if (data.status === "success") {
+            window.location.reload();
+        }
       });
     });
   });
 
   $('button.delete-personnel').each(function () {
     var self = $(this), ref = String(self.data('personnel')), data = 'delete-personnel=true&ref=' + escape(ref);
-    $(this).click(function (e) {
+    self.click(function (e) {
       e.preventDefault();
       $.post('executepersonnel', data, function (data) {
         data = JSON.parse(data);
-        // if (data.status === "success") {
-        //     window.location.reload();
-        // }
-        console.log(data);
+        if (data.status === "success") {
+            window.location.reload();
+        }
       });
     });
   });
 
   $('#form_newentry').submit(function (e) {
     e.preventDefault();
-    var self = $(this), fetch = {'firstname': String($('#firstname').val()), 'lastname': String($('#lastname').val()), 'othername': String($('#othername').val()), 'dob': String($('#dob').val()), 'sex': String($('#sex').val()), 'phonenumber': String($('#phonenumber').val()), 'emailaddress': String($('#emailaddress').val()), 'homeaddress': String($('#homeaddress').val()), 'occupation': String($('#occupation').val()), 'workplace': String($('#workplace').val()), 'workaddress': String($('#workaddress').val()), 'image1': String($('#image1').val()), 'image2': String($('#image2').val())}, data = [], ready = true;
+    var self = $(this), fetch = {'firstname': String($('#efirstname').val()), 'lastname': String($('#elastname').val()), 'othername': String($('#eothername').val()), 'dob': String($('#edob').val()), 'sex': String($('#esex').val()), 'phonenumber': String($('#ephonenumber').val()), 'emailaddress': String($('#eemailaddress').val()), 'homeaddress': String($('#ehomeaddress').val()), 'occupation': String($('#eoccupation').val()), 'workplace': String($('#eworkplace').val()), 'workaddress': String($('#eworkaddress').val()), 'image1': String($('#eimage1').val()), 'image2': String($('#eimage2').val())}, data = [], ready = true;
     $.each(fetch, function (key, val) {
       data.push(key + '=' + escape(val));
       if (val.trim().length === 0) {
@@ -144,31 +139,31 @@ $(document).ready(function() {
       }
     });
     (ready) && $.post('executenewentry', data.join('&'), function (data) {
-      var data = JSON.parse(data); //responseElem = self.find('#alert-container');
-      // if (data['status'] === "failure") {
-      //   responseElem.removeClass('alert-success').addClass('alert-danger');
-      // } else if (data['status'] === "success") {
-      //   responseElem.removeClass('alert-danger').addClass('alert-success');
-      // }
-      // responseElem.html(data['message']);
-      console.log(data);
+      var data = JSON.parse(data), responseElem = self.find('#ealert-container');
+      if (data['status'] === "failure") {
+        responseElem.removeClass('alert-success').addClass('alert-danger');
+      } else if (data['status'] === "success") {
+        responseElem.removeClass('alert-danger').addClass('alert-success');
+      }
+      responseElem.html(data['message']);
     });
   });
 
   $('button.edit-entry').each(function () {
     var self = $(this), ref = String(self.data('entry')), data = 'edit-entry=true&ref=' + escape(ref);
-    $(this).click(function (e) {
+    self.click(function (e) {
       e.preventDefault();
+      console.log('i have been clicked');
       $.post('executeeditentry', data, function (data) {
         data = JSON.parse(data);
-        $('#form_editentry input[name="othername"]').val(data.Othername);
-        $('#form_editentry input[name="dob"]').val(data.DOB);
-        $('#form_editentry input[name="phonenumber"]').val(data.Phonenumber);
-        $('#form_editentry input[name="emailaddress"]').val(data.EmailAddress);
-        $('#form_editentry input[name="homeaddress"]').val(data.HomeAddress);
-        $('#form_editentry input[name="occupation"]').val(data.Occupation);
-        $('#form_editentry input[name="workplace"]').val(data.WorkPlace);
-        $('#form_editentry input[name="workaddress"]').val(data.WorkAddress);
+        $('#form_editentry input[name="eeothername"]').val(data.Othername);
+        $('#form_editentry input[name="eedob"]').val(data.DOB);
+        $('#form_editentry input[name="eephonenumber"]').val(data.Phonenumber);
+        $('#form_editentry input[name="eeemailaddress"]').val(data.EmailAddress);
+        $('#form_editentry input[name="eehomeaddress"]').val(data.HomeAddress);
+        $('#form_editentry input[name="eeoccupation"]').val(data.Occupation);
+        $('#form_editentry input[name="eeworkplace"]').val(data.WorkPlace);
+        $('#form_editentry input[name="eeworkaddress"]').val(data.WorkAddress);
         $('#form_editentry button').attr('data-id', data.UniqueID);
       });
     });
@@ -176,7 +171,7 @@ $(document).ready(function() {
 
   $('#form_editentry').submit(function (e) {
     e.preventDefault();
-    var self = $(this), ref = String($('#form_editentry button').data('id')), fetch = {'othername': String($('#othername').val()), 'dob': String($('#dob').val()), 'phonenumber': String($('#phonenumber').val()), 'emailaddress': String($('#emailaddress').val()), 'homeaddress': String($('#homeaddress').val()), 'occupation': String($('#occupation').val()), 'workplace': String($('#workplace').val()), 'workaddress': String($('#workaddress').val()), 'id': escape(ref)}, data = [], ready = true;
+    var self = $(this), ref = String($('#form_editentry button').data('id')), fetch = {'othername': String($('#eeothername').val()), 'dob': String($('#eedob').val()), 'phonenumber': String($('#eephonenumber').val()), 'emailaddress': String($('#eeemailaddress').val()), 'homeaddress': String($('#eehomeaddress').val()), 'occupation': String($('#eeoccupation').val()), 'workplace': String($('#eeworkplace').val()), 'workaddress': String($('#eeworkaddress').val()), 'id': escape(ref)}, data = [], ready = true;
     $.each(fetch, function (key, val) {
       data.push(key + '=' + escape(val));
       if (val.trim().length === 0) {
@@ -184,14 +179,13 @@ $(document).ready(function() {
       }
     });
     (ready) && $.post('executeeditentry', data.join('&'), function (data) {
-      var data = JSON.parse(data); //responseElem = self.find('#alert-container');
-      // if (data['status'] === "failure") {
-      //   responseElem.removeClass('alert-success').addClass('alert-danger');
-      // } else if (data['status'] === "success") {
-      //   responseElem.removeClass('alert-danger').addClass('alert-success');
-      // }
-      // responseElem.html(data['message']);
-      console.log(data);
+      var data = JSON.parse(data), responseElem = $('#eealert-container');
+      if (data['status'] === "failure") {
+        responseElem.removeClass('alert-success').addClass('alert-danger');
+      } else if (data['status'] === "success") {
+        responseElem.removeClass('alert-danger').addClass('alert-success');
+      }
+      responseElem.html(data['message']);
     });
   });
 
@@ -209,7 +203,7 @@ $(document).ready(function() {
     e.preventDefault();
     if (x < max_fields) {
       x++;
-      $(wrapper).append('<div><input type="text" placeholder="Image URL" class="imageurlfield" name="imageURL[]" /><a href="#" class="removeimage_field">Remove</a></div>');
+      $(wrapper).append('<div class="form-group"><label class="col-sm-2 control-label">#'+ x +'</label><div class="col-sm-6"><input type="text" placeholder="Insert image URL" class="form-control imageurlfield" name="imageURL[]" required /></div><a href="#" class="removeimage_field">Remove</a></div>');
     }
   }); 
   $(wrapper).on("click", ".removeimage_field", function(e){
@@ -230,15 +224,22 @@ $(document).ready(function() {
     data['id'] = String($('#form_trainalbum input[name="entryid"]').val());
     data['dataset'] = images;
     (ready) && $.post('executetrain', JSON.stringify(data), function (data) {
-      var data = JSON.parse(data); //responseElem = self.find('#alert-container');
-      // if (data['status'] === "failure") {
-      //   responseElem.removeClass('alert-success').addClass('alert-danger');
-      // } else if (data['status'] === "success") {
-      //   responseElem.removeClass('alert-danger').addClass('alert-success');
-      // }
-      // responseElem.html(data['message']);
-      console.log(data);
+      var data = JSON.parse(data), responseElem = self.find('#alert-container');
+      if (data['status'] === "failure") {
+        responseElem.removeClass('alert-success').addClass('alert-danger');
+      } else if (data['status'] === "success") {
+        responseElem.removeClass('alert-danger').addClass('alert-success');
+      }
+      responseElem.html(data['message']);
     });
+  });
+
+  $('#logout').click(function (e) {
+      e.preventDefault();
+      $.post('executelogout', null, function (data) {
+          var data = JSON.parse(data);
+          document.location = data['redirect'];
+      });
   });
 
 });

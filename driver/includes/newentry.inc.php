@@ -1,41 +1,100 @@
-<?php
-
-require_once('../config.php');
-// use App\Admin\ImageMatch;
-
-// $data = array(
-// 	"id" => "josephyobo",
-// 	"imageURL" => "http://e2.365dm.com/13/12/768x432/159128554_3045254.jpg?20140131063808"
-// );
-// die(pre_dump((new ImageMatch)->trainAlbum($data)));
-
-?>
-<html>
-	<head></head>
-	<body>
-		<form method="POST" id="form_newentry">
-		<input type="text" placeholder="firstname" id="firstname" name="firstname" required /><br/><br/>
-		<input type="text" placeholder="lastname" id="lastname" name="lastname" required /><br/><br/>
-		<input type="text" placeholder="othername" id="othername" name="othername" /><br/><br/>
-		<input type="text" placeholder="dob" id="dob" name="dob" required /><br/><br/>
-		<select name="sex" id="sex" required>
-			<option selected disabled>Select Sex</option>
-			<option value="M">Male</option>
-			<option value="F">Female</option>
-		</select><br/><br/>
-		<input type="text" placeholder="phonenumber" id="phonenumber" name="phonenumber" required /><br/><br/>
-		<input type="email" placeholder="emailaddress" id="emailaddress" name="emailaddress" required /><br/><br/>
-		<input type="text" placeholder="homeaddress" id="homeaddress" name="homeaddress" required /><br/><br/>
-		<input type="text" placeholder="occupation" id="occupation" name="occupation" /><br/><br/>
-		<input type="text" placeholder="workplace" id="workplace" name="workplace" /><br/><br/>
-		<input type="text" placeholder="workaddress" id="workaddress" name="workaddress" /><br/><br/>
-		<input type="text" placeholder="image1" id="image1" name="image1" required /><br/><br/>
-		<input type="text" placeholder="image2" id="image2" name="image2" required /><br/><br/>
-		<br/><br/>
-		<button type="submit">Add Entry</button>
-		</form>
-
-		<script src="jquery.js"></script>
-		<script src="main.js"></script>
-	</body>
-</html>
+<div class="modal fade" id="newEntryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog modal-sm" role="document" style="width: 500px;">
+    	<div class="modal-content">
+	      	<div class="modal-header">
+	        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        	<h4 class="modal-title" id="myModalLabel">NPFIMS New Entry</h4>
+	      	</div>
+	      	<div id="ealert-container" class="alert fade in " role="alert" style="border: 0;"></div>
+			<form method="POST" id="form_newentry" class="form-horizontal" style="padding-top: 10px; padding-bottom: 10px;">
+				<div class="form-group">
+					<label class="col-sm-4 control-label">First name</label>
+					<div class="col-sm-7">
+						<input type="text" placeholder="John" class="form-control" id="efirstname" name="efirstname" required />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-4 control-label">Last name</label>
+					<div class="col-sm-7">
+						<input type="text" placeholder="Doe" class="form-control" id="elastname" name="elastname" required />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-4 control-label">Other name</label>
+					<div class="col-sm-7">
+						<input type="text" placeholder="John" class="form-control" id="eothername" name="eothername" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-4 control-label">Date of birth</label>
+					<div class="col-sm-7">
+						<input type="date" placeholder="10/06/1993" class="form-control" id="edob" name="edob" required />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-4 control-label">Sex</label>
+					<div class="col-sm-7">
+						<select name="esex" id="esex" class="form-control" required>
+							<option selected disabled>Select Sex</option>
+							<option value="M">Male</option>
+							<option value="F">Female</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-4 control-label">Phone number</label>
+					<div class="col-sm-7">
+						<input type="text" placeholder="+2347035762893" class="form-control" id="ephonenumber" name="ephonenumber" required />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-4 control-label">Email address</label>
+					<div class="col-sm-7">
+						<input type="text" placeholder="john.doe@mail.com" class="form-control" id="eemailaddress" name="eemailaddress" required />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-4 control-label">Home address</label>
+					<div class="col-sm-7">	
+						<input type="text" placeholder="#10 brownhilly close, Nsukka, Enugu" class="form-control"  id="ehomeaddress" name="ehomeaddress" required />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-4 control-label">Occupation</label>
+					<div class="col-sm-7">		
+						<input type="text" placeholder="Mechanical Engineer" class="form-control" id="eoccupation" name="eoccupation" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-4 control-label">Work place</label>
+					<div class="col-sm-7">
+						<input type="text" placeholder="Toyota Plc" class="form-control" id="eworkplace" name="eworkplace" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-4 control-label">Work address</label>
+					<div class="col-sm-7">
+						<input type="text" placeholder="#10 smart drive, Nsukka, Enugu" class="form-control" id="eworkaddress" name="eworkaddress" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-4 control-label">Image 1</label>
+					<div class="col-sm-7">
+						<input type="text" placeholder="Insert image URL" class="form-control" id="eimage1" name="eimage1" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-4 control-label">Image 2</label>
+					<div class="col-sm-7">
+						<input type="text" placeholder="Insert image URL" class="form-control" id="eimage2" name="eimage2" />
+					</div>
+				</div>
+				<div class="form-group">
+				    <div class="col-sm-offset-4 col-sm-6">
+				      	<button type="submit" class="btn btn-primary">Add Entry</button>
+				    </div>
+				</div>
+			</form>
+		</div>
+  	</div>
+</div>

@@ -74,6 +74,7 @@ class Npfims {
 
 	public static function logout() {
 		unset($_SESSION['PID']);
+		unset($_SESSION['redirect']);
 		return (!isset($_SESSION['PID'])) ? array('redirect' => BASE_URL) : false;
 	}
 
