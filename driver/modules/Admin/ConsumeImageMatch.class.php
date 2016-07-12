@@ -139,7 +139,8 @@ class ConsumeImageMatch {
 	public function editEntry($data) {
 		global $db;
 		$update = $db->query("UPDATE Data SET Othername = '{$data['othername']}', DOB = '{$data['dob']}', Phonenumber = '{$data['phonenumber']}', EmailAddress = '{$data['emailaddress']}', HomeAddress = '{$data['homeaddress']}', Occupation = '{$data['occupation']}', WorkPlace = '{$data['workplace']}', WorkAddress = '{$data['workaddress']}' WHERE UniqueID = '{$data['id']}'");
-		return ($update === true) ? true : false;
+		$response = array('status' => (($update === true) ? 'success' : 'failure'), 'message' => (($update === true) ? 'This entry has been updated successfully.' : 'Sorry, this entry has not been updated successfully. Please contact admin.'));
+		return $response;
 	}
 
 	public function updateImageCount($data) {
