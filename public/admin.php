@@ -165,7 +165,7 @@ $personnels = Npfims::retrieveAllPersonnels();
         <?php require_once(INCS_DIR.'scripts.inc.php'); ?>
         <?php require_once(INCS_DIR.'editentry.inc.php'); ?>
         <?php require_once(INCS_DIR.'train.inc.php'); ?>
-        <?php require_once(INCS_DIR.'newentry.inc.php'); ?>
         <?php require_once(INCS_DIR.'newpersonnel.inc.php'); ?>
+        <?php require_once(INCS_DIR.'newentry.inc.php'); ?>
     </body>
 </html>

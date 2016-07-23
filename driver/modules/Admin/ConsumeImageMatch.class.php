@@ -79,7 +79,7 @@ class ConsumeImageMatch {
 		if ($this->checkEmail() === true AND $this->checkPhonenumber() === true) {
 			$uniqueid = md5(implode(':', [$firstname, $emailaddress, Keygen\generateRandKey(32)]));
 
-			$insert = $db->query("INSERT INTO Data(UniqueID, Firstname, Lastname, Othername, DOB, Sex, Phonenumber, EmailAddress, HomeAddress, Occupation, WorkPlace, WorkAddress, ImageCount) VALUES('{$uniqueid}', '{$firstname}', '{$lastname}', '{$othername}', '{$dob}', '{$sex}', '{$phonenumber}', '{$emailaddress}', '{$homeaddress}', '{$occupation}', '{$workplace}', '{$workaddress}', 2)");
+			$insert = $db->query("INSERT INTO Data(UniqueID, Firstname, Lastname, Othername, DOB, Sex, Phonenumber, EmailAddress, HomeAddress, Occupation, WorkPlace, WorkAddress) VALUES('{$uniqueid}', '{$firstname}', '{$lastname}', '{$othername}', '{$dob}', '{$sex}', '{$phonenumber}', '{$emailaddress}', '{$homeaddress}', '{$occupation}', '{$workplace}', '{$workaddress}')");
 			if ($insert === true) {
 				$dataArray = array(
 					'id' => $uniqueid,
@@ -91,11 +91,10 @@ class ConsumeImageMatch {
 						'id' => $dataArray['id'],
 						'imageURL' => $dataArray['image'][$i]
 					);
-					$createAlbumEntry = (new ImageMatch)->trainAlbum($data);
+					$createAlbumEntry = (new ImageMatch)->enrollToGallery($data);
 				}
 				// $response[] = json_decode(json_encode($createAlbumEntry), true);
 				//return a proper success failure variable to frontend
-				(new ImageMatch)->rebuildAlbum();
 				return true;
 			} else {
 				return false;
@@ -110,7 +109,7 @@ class ConsumeImageMatch {
 				'id' => $dataArray['id'],
 				'imageURL' => $dataArray['dataset'][$i]
 			);
-			(new ImageMatch)->trainAlbum($data);
+			(new ImageMatch)->enrollToGallery($data);
 		}
 		return true;
 	}
@@ -141,12 +140,6 @@ class ConsumeImageMatch {
 		$update = $db->query("UPDATE Data SET Othername = '{$data['othername']}', DOB = '{$data['dob']}', Phonenumber = '{$data['phonenumber']}', EmailAddress = '{$data['emailaddress']}', HomeAddress = '{$data['homeaddress']}', Occupation = '{$data['occupation']}', WorkPlace = '{$data['workplace']}', WorkAddress = '{$data['workaddress']}' WHERE UniqueID = '{$data['id']}'");
 		$response = array('status' => (($update === true) ? 'success' : 'failure'), 'message' => (($update === true) ? 'This entry has been updated successfully.' : 'Sorry, this entry has not been updated successfully. Please contact admin.'));
 		return $response;
-	}
-
-	public function updateImageCount($data) {
-		global $db;
-		$update = $db->query("UPDATE Data SET ImageCount = '{$data['imageCount']}' WHERE UniqueID = '{$data['id']}' LIMIT 1");
-		return ($update === true) ? true : false;
 	}
 
 	public function detectFace($data) {

@@ -157,13 +157,14 @@ $(document).ready(function() {
             }
         });
         ready && $.post("executenewentry", data.join("&"), function(data) {
-            var data = JSON.parse(data), responseElem = $("#ealert-container");
-            if (data["status"] === "failure") {
-                responseElem.removeClass("alert-success").addClass("alert-danger");
-            } else if (data["status"] === "success") {
-                responseElem.removeClass("alert-danger").addClass("alert-success");
-            }
-            responseElem.html(data["message"]);
+            var data = JSON.parse(data); //responseElem = $("#ealert-container");
+            // if (data["status"] === "failure") {
+            //     responseElem.removeClass("alert-success").addClass("alert-danger");
+            // } else if (data["status"] === "success") {
+            //     responseElem.removeClass("alert-danger").addClass("alert-success");
+            // }
+            // responseElem.html(data["message"]);
+            console.log(data);
         });
     });
     $("button.edit-entry").each(function() {
