@@ -12,7 +12,7 @@ if (isset($_SESSION['PID'])) {
   	<head>
 	    <title>NPFIMS - Account Sign In</title>
 		<?php require_once(INCS_DIR.'metadata.inc.php'); ?>
-	  	<style>
+	  	<style type="text/css">
 	  		html, body, div, header, form {
 	  			padding:0;
 			  	font-size:100%;

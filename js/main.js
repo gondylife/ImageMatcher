@@ -8,7 +8,7 @@ $(document).ready(function() {
         $("#wrapper").toggleClass("toggled-2");
         $("#menu ul").hide();
     });
-    $("#admin-content-div").html($("#entry-content").html());
+    $("#admin-content-div").html($("#personnel-content").html());
     function initMenu() {
         $("#menu ul").hide();
         $("#menu ul").children(".current").parent().show();
@@ -94,6 +94,7 @@ $(document).ready(function() {
     $("button.deactivate-personnel").each(function() {
         var self = $(this), ref = String(self.data("personnel")), data = "deactivate-personnel=true&ref=" + escape(ref);
         self.click(function(e) {
+          if (confirm('Are you sure? Click OK to continue or Cancel to do nothing!')) {
             e.preventDefault();
             $.post("executepersonnel", data, function(data) {
                 data = JSON.parse(data);
@@ -101,23 +102,27 @@ $(document).ready(function() {
                     window.location.reload();
                 }
             });
+          }
         });
     });
     $("button.activate-personnel").each(function() {
         var self = $(this), ref = String(self.data("personnel")), data = "activate-personnel=true&ref=" + escape(ref);
         self.click(function(e) {
-            e.preventDefault();
-            $.post("executepersonnel", data, function(data) {
-                data = JSON.parse(data);
-                if (data.status === "success") {
-                    window.location.reload();
-                }
-            });
+            if (confirm('Are you sure? Click OK to continue or Cancel to do nothing!')) {
+              e.preventDefault();
+              $.post("executepersonnel", data, function(data) {
+                  data = JSON.parse(data);
+                  if (data.status === "success") {
+                      window.location.reload();
+                  }
+              });
+            }
         });
     });
     $("button.delete-personnel").each(function() {
         var self = $(this), ref = String(self.data("personnel")), data = "delete-personnel=true&ref=" + escape(ref);
         self.click(function(e) {
+          if (confirm('Are you sure? Click OK to continue or Cancel to do nothing!')) {
             e.preventDefault();
             $.post("executepersonnel", data, function(data) {
                 data = JSON.parse(data);
@@ -125,6 +130,7 @@ $(document).ready(function() {
                     window.location.reload();
                 }
             });
+          }
         });
     });
     $("#form_newentry").submit(function(e) {
@@ -248,6 +254,22 @@ $(document).ready(function() {
                 responseElem.removeClass("alert-danger").addClass("alert-success");
             }
             responseElem.html(data["message"]);
+        });
+    });
+    $("#form_search").submit(function(e) {
+      e.preventDefault();
+        var image = escape(String($('#image').val())), ready = true;
+        if (image.trim().length === 0) {
+          ready = false;
+        }
+        ready && $.post("executeinternal", image, function(data) {
+            // var data = JSON.parse(data), responseElem = $("#internal-alert-container");
+            // if (data["status"] === "failure") {
+            //   responseElem.removeClass("alert-success").addClass("alert-danger").html(data["message"]);;
+            // } else if (data["status"] === "success") {
+            //   //
+            // }
+            console.log(data);
         });
     });
     $("#logout").click(function(e) {

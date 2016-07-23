@@ -4,6 +4,10 @@ require_once('../config.php');
 
 if (!isset($_SESSION['PID'])) {
     header('Location: '.BASE_URL.'login');
+} else {
+    if (isset($_SESSION['redirect']) AND ($_SESSION['redirect'] != BASE_URL.'admin')) {
+        header('Location: '.BASE_URL.'login');
+    }
 }
 
 use App\Admin\Npfims;
@@ -50,7 +54,7 @@ $personnels = Npfims::retrieveAllPersonnels();
                             <li><a href="" data-toggle="modal" data-target="#newEntryModal"><span class="fa-stack fa-lg pull-left"><i class="fa fa-plus-square-o fa-stack-1x"></i></span>Create New</a></li>
                         </ul>
                     </li>
-                    <li><a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-search-plus fa-stack-1x"></i></span>Search</a></li>
+                    <li><a href="internal"><span class="fa-stack fa-lg pull-left"><i class="fa fa-search-plus fa-stack-1x"></i></span>Search</a></li>
                     <li id="logout-menu-item">
                         <a href="" id="logout"><span class="fa-stack fa-lg pull-left"><i class="fa fa-sign-out fa-stack-1x"></i></span> Log Out</a>
                     </li>

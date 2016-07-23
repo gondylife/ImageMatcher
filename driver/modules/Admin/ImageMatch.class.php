@@ -48,7 +48,7 @@ class ImageMatch {
 			"entryid" => $data['id']
 		);
 		if (array_key_exists("imageURL", $data)) {
-			$body['urls'] = $data['imageURL'];
+			$body['urls'] = urldecode($data['imageURL']);
 		}
 		if (array_key_exists("imageFile", $data)) {
 			$body['files'] = Unirest\Request\Body::file($data['imageFile']);
@@ -77,7 +77,7 @@ class ImageMatch {
 		$urlFaceDetect = self::$urlCore.self::$endpointFaceDetect;
 		$body = array();
 		if (array_key_exists("imageURL", $data)) {
-			$body['urls'] = $data['imageURL'];
+			$body['urls'] = urldecode($data['imageURL']);
 		}
 		if (array_key_exists("imageFile", $data)) {
 			$body['files'] = Unirest\Request\Body::file($data['imageFile']);
@@ -100,7 +100,7 @@ class ImageMatch {
 			"albumkey" => self::$albumKey
 		);
 		if (array_key_exists("imageURL", $data)) {
-			$body['urls'] = $data['imageURL'];
+			$body['urls'] = urldecode($data['imageURL']);
 		}
 		if (array_key_exists("imageFile", $data)) {
 			$body['files'] = Unirest\Request\Body::file($data['imageFile']);
