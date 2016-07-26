@@ -94,43 +94,43 @@ $(document).ready(function() {
     $("button.deactivate-personnel").each(function() {
         var self = $(this), ref = String(self.data("personnel")), data = "deactivate-personnel=true&ref=" + escape(ref);
         self.click(function(e) {
-          if (confirm('Are you sure? Click OK to continue or Cancel to do nothing!')) {
-            e.preventDefault();
-            $.post("executepersonnel", data, function(data) {
-                data = JSON.parse(data);
-                if (data.status === "success") {
-                    window.location.reload();
-                }
-            });
-          }
+            if (confirm("Are you sure? Click OK to continue or Cancel to do nothing!")) {
+                e.preventDefault();
+                $.post("executepersonnel", data, function(data) {
+                    data = JSON.parse(data);
+                    if (data.status === "success") {
+                        window.location.reload();
+                    }
+                });
+            }
         });
     });
     $("button.activate-personnel").each(function() {
         var self = $(this), ref = String(self.data("personnel")), data = "activate-personnel=true&ref=" + escape(ref);
         self.click(function(e) {
-            if (confirm('Are you sure? Click OK to continue or Cancel to do nothing!')) {
-              e.preventDefault();
-              $.post("executepersonnel", data, function(data) {
-                  data = JSON.parse(data);
-                  if (data.status === "success") {
-                      window.location.reload();
-                  }
-              });
+            if (confirm("Are you sure? Click OK to continue or Cancel to do nothing!")) {
+                e.preventDefault();
+                $.post("executepersonnel", data, function(data) {
+                    data = JSON.parse(data);
+                    if (data.status === "success") {
+                        window.location.reload();
+                    }
+                });
             }
         });
     });
     $("button.delete-personnel").each(function() {
         var self = $(this), ref = String(self.data("personnel")), data = "delete-personnel=true&ref=" + escape(ref);
         self.click(function(e) {
-          if (confirm('Are you sure? Click OK to continue or Cancel to do nothing!')) {
-            e.preventDefault();
-            $.post("executepersonnel", data, function(data) {
-                data = JSON.parse(data);
-                if (data.status === "success") {
-                    window.location.reload();
-                }
-            });
-          }
+            if (confirm("Are you sure? Click OK to continue or Cancel to do nothing!")) {
+                e.preventDefault();
+                $.post("executepersonnel", data, function(data) {
+                    data = JSON.parse(data);
+                    if (data.status === "success") {
+                        window.location.reload();
+                    }
+                });
+            }
         });
     });
     $("#form_newentry").submit(function(e) {
@@ -152,7 +152,7 @@ $(document).ready(function() {
         }, data = [], ready = true;
         $.each(fetch, function(key, val) {
             data.push(key + "=" + escape(val));
-            if (val.trim().length === 0 && ((key != 'othername') || (key != 'occupation') || (key != 'workplace') || ('workaddress'))) {
+            if (val.trim().length === 0 && (key != "othername" || key != "occupation" || key != "workplace" || "workaddress")) {
                 ready = false;
             }
         });
@@ -257,19 +257,39 @@ $(document).ready(function() {
         });
     });
     $("#form_search").submit(function(e) {
-      e.preventDefault();
-        var image = escape(String($('#image').val())), ready = true;
+        e.preventDefault();
+        var image = escape(String($("#image").val())), ready = true;
         if (image.trim().length === 0) {
-          ready = false;
+            ready = false;
         }
+        $("#loadingdiv").show();
         ready && $.post("executeinternal", image, function(data) {
-            var data = JSON.parse(data), responseElem = $("#internal-alert-container"), resultModal = $("#resultModal");
+            var data = JSON.parse(data), responseElem = $("#internal-alert-container"), resultModal = $("#resultModal"), sex;
             if (data["status"] === "failure") {
-              responseElem.removeClass("alert-success").addClass("alert-danger").html(data["message"]);;
+                responseElem.removeClass("alert-success").addClass("alert-danger").html(data["message"]);
+                $("#loadingdiv").hide();
             } else if (data["status"] === "success") {
-              resultModal.modal('show');
+                $("#loadingText").html(data["message"]);
+                if (data["details"]["Sex"] === "M") sex = "Male";
+                if (data["details"]["Sex"] === "F") sex = "Female";
+                resultModal.find("#displayimage").attr("src", data["details"]["BaseIMG"]);
+                resultModal.find("#firstname").html(data["details"]["Firstname"]);
+                resultModal.find("#lastname").html(data["details"]["Lastname"]);
+                resultModal.find("#othername").html(data["details"]["Othername"]);
+                resultModal.find("#dob").html(data["details"]["DOB"]);
+                resultModal.find("#sex").html(sex);
+                resultModal.find("#email").html(data["details"]["EmailAddress"]);
+                resultModal.find("#phonenumber").html(data["details"]["Phonenumber"]);
+                resultModal.find("#confidence").html(data["confidence"]);
+                resultModal.find("#homeaddress").html(data["details"]["HomeAddress"]);
+                resultModal.find("#occupation").html(data["details"]["Occupation"]);
+                resultModal.find("#workplace").html(data["details"]["WorkPlace"]);
+                resultModal.find("#workaddress").html(data["details"]["WorkAddress"]);
+                resultModal.modal("show");
+                setTimeout(function() {
+                    $("#loadingdiv").hide();
+                }, 2e3);
             }
-            console.log(data);
         });
     });
     $("#logout").click(function(e) {

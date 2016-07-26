@@ -8,6 +8,7 @@ if (isset($_POST)) {
 	if ($login['status'] === 'success') {
 		$_SESSION['PID'] = $login['PoliceID'];
 		$_SESSION['redirect'] = $login['redirect'];
+		$_SESSION['firstname'] = $login['Firstname'];
 	}
 	die(json_encode($login));
 }

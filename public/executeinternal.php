@@ -23,6 +23,7 @@ if (isset($_POST)) {
 				"status" => "failure",
 				"message" => "Oops, No Match Found!"
 			);
+			die(json_encode($response));
 		}
 	}
 }

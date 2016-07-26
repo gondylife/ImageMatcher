@@ -130,15 +130,27 @@ if (!isset($_SESSION['PID'])) {
 			.form-wrapper button::-moz-focus-inner {
 			    border: 0;
 			    padding: 0;
-			}       
+			}
+			@media print {
+			    header, .footer, footer {
+			        display: none;
+			    }
+			    body.modal-open div.container.body-content div#mainContent {
+			        display: none;
+			    }
+			    .noPrint {
+			        display: none;
+			    }
+			}      
 		</style>
 	</head>
 	<body>
-		<div class="container-fluid">
+		<div id="loadingdiv" style="z-index:5000; background-color:rgba(255,255,255,0.9); height:100%; width:100%; text-align:center; vertical-align:middle; display:none; position:absolute; padding:270px 20px 20px;"><img src="preloader.gif"><br><br><p style="font-size: 20px;"><em id="loadingText">Search in progress...</em></div>
+		<div class="container-fluid noPrint">
 		  	<div class="row">
 		    	<div id="top-panel" class="col-sm-12">
 		    		<div id="panel-left">
-		    			<span>Hello, Christian</span>
+		    			<span>Hello, <em id="personnelName"><?=$_SESSION['firstname'];?></em></span>
 		    		</div>
 		    		<div id="panel-right">
 						<a href="" id="logout" title="Log Out" style="color: #FFF; cursor: pointer;"><span><i class="fa fa-sign-out"></i></span></a>

@@ -67,7 +67,6 @@ class Login {
 		$policeid = $this->sanitized['policeid'];
 		$retriveRole = $db->query("SELECT Role FROM Access WHERE PoliceID = '{$policeid}' LIMIT 1");
 		$role = $db->fetchResult($retriveRole, Database::RESULT_ASSOC)['Role'];
-
 		if ($role === 'A') {
 			return BASE_URL.'admin';
 		}
@@ -76,11 +75,20 @@ class Login {
 		}
 	}
 
+	private function getFirstName () {
+		global $db;
+		$policeid = $this->sanitized['policeid'];
+		$retriveRole = $db->query("SELECT Firstname FROM Access WHERE PoliceID = '{$policeid}' LIMIT 1");
+		$firstname = $db->fetchResult($retriveRole, Database::RESULT_ASSOC)['Firstname'];
+		return $firstname;
+	}
+
 	public function response () {
 		$login = $this->loginPersonnel();
 		$response = array('status' => (($login === true) ? 'success' : 'failure'), 'message' => (($login === true) ? 'Login Successful.' : $login));
 		$redirect = $this->getRedirectURL();
-		($login === true) && $response = array_merge($response, array('PoliceID' => $this->policeid,  'redirect' => $redirect));
+		$firstname = $this->getFirstName();
+		($login === true) && $response = array_merge($response, array('Firstname' => $firstname, 'PoliceID' => $this->policeid,  'redirect' => $redirect));
 		return $response;
 	}
 
