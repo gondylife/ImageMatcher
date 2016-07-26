@@ -79,7 +79,7 @@ class ConsumeImageMatch {
 		if ($this->checkEmail() === true AND $this->checkPhonenumber() === true) {
 			$uniqueid = md5(implode(':', [$firstname, $emailaddress, Keygen\generateRandKey(32)]));
 
-			$insert = $db->query("INSERT INTO Data(UniqueID, Firstname, Lastname, Othername, DOB, Sex, Phonenumber, EmailAddress, HomeAddress, Occupation, WorkPlace, WorkAddress) VALUES('{$uniqueid}', '{$firstname}', '{$lastname}', '{$othername}', '{$dob}', '{$sex}', '{$phonenumber}', '{$emailaddress}', '{$homeaddress}', '{$occupation}', '{$workplace}', '{$workaddress}')");
+			$insert = $db->query("INSERT INTO Data(UniqueID, Firstname, Lastname, Othername, DOB, Sex, Phonenumber, EmailAddress, HomeAddress, Occupation, WorkPlace, WorkAddress, BaseIMG) VALUES('{$uniqueid}', '{$firstname}', '{$lastname}', '{$othername}', '{$dob}', '{$sex}', '{$phonenumber}', '{$emailaddress}', '{$homeaddress}', '{$occupation}', '{$workplace}', '{$workaddress}', '{$image1}')");
 			if ($insert === true) {
 				$dataArray = array(
 					'id' => $uniqueid,
@@ -147,7 +147,15 @@ class ConsumeImageMatch {
 	}
 
 	public function recognizeFace($data) {
-		$recogize = (new ImageMatch)->recognizeFace($data);
+		return (new ImageMatch)->recognizeFace($data);
+	}
+
+	public function retrieveDetails($entryID) {
+		global $db;
+		$retrieve = $db->query("SELECT * FROM Data WHERE UniqueID = '{$entryID}'");
+		$fetch = $db->fetchResult($retrieve, Database::RESULT_ASSOC);
+		$response = array('status' => 'success', 'message' => 'Match found, retrieving details...', 'details' => $fetch);
+		return $response;
 	}
 
 	private function checkEmail() {

@@ -152,19 +152,18 @@ $(document).ready(function() {
         }, data = [], ready = true;
         $.each(fetch, function(key, val) {
             data.push(key + "=" + escape(val));
-            if (val.trim().length === 0) {
+            if (val.trim().length === 0 && ((key != 'othername') || (key != 'occupation') || (key != 'workplace') || ('workaddress'))) {
                 ready = false;
             }
         });
-        ready && $.post("executenewentry", data.join("&"), function(data) {
-            var data = JSON.parse(data); //responseElem = $("#ealert-container");
-            // if (data["status"] === "failure") {
-            //     responseElem.removeClass("alert-success").addClass("alert-danger");
-            // } else if (data["status"] === "success") {
-            //     responseElem.removeClass("alert-danger").addClass("alert-success");
-            // }
-            // responseElem.html(data["message"]);
-            console.log(data);
+        ready && $.post("executenewentry", data.join("&"), function(data, status) {
+            var data = JSON.parse(data), responseElem = $("#ealert-container");
+            if (data["status"] === "failure") {
+                responseElem.removeClass("alert-success").addClass("alert-danger");
+            } else if (data["status"] === "success") {
+                responseElem.removeClass("alert-danger").addClass("alert-success");
+            }
+            responseElem.html(data["message"]);
         });
     });
     $("button.edit-entry").each(function() {
@@ -264,12 +263,12 @@ $(document).ready(function() {
           ready = false;
         }
         ready && $.post("executeinternal", image, function(data) {
-            // var data = JSON.parse(data), responseElem = $("#internal-alert-container");
-            // if (data["status"] === "failure") {
-            //   responseElem.removeClass("alert-success").addClass("alert-danger").html(data["message"]);;
-            // } else if (data["status"] === "success") {
-            //   //
-            // }
+            var data = JSON.parse(data), responseElem = $("#internal-alert-container"), resultModal = $("#resultModal");
+            if (data["status"] === "failure") {
+              responseElem.removeClass("alert-success").addClass("alert-danger").html(data["message"]);;
+            } else if (data["status"] === "success") {
+              resultModal.modal('show');
+            }
             console.log(data);
         });
     });

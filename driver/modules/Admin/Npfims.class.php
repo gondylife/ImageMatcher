@@ -60,6 +60,10 @@ class Npfims {
 		return (new ConsumeImageMatch)->recognizeFace($data);
 	}
 
+	public static function retrieveDetails($entryID) {
+		return (new ConsumeImageMatch)->retrieveDetails($entryID);
+	}
+
 	public static function deactivate($data) {
 		return (new Register)->deactivate($data);
 	}

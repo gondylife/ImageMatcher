@@ -13,8 +13,10 @@ class ImageMatch {
 	private static $endpointDetect = 'detect';
 	private static $endpointRecognize = 'recognize';
 
-	private function enrollToGallery($data) {
+	public function enrollToGallery($data) {
 		$urlEnrollToGallery = self::$urlCore.self::$endpointEnroll;
+		$imageURL = urldecode($data['imageURL']);
+		$galleryName = self::$galleryName;
 		$response = Unirest\Request::post($urlEnrollToGallery,
 		  array(
 		    "X-Mashape-Key" => "6eausabVMPmshTIsH6RFSxyjGtDDp1PeoG8jsn7XOLkw57PKs5",
@@ -22,18 +24,19 @@ class ImageMatch {
 		    "app_id" => self::$appID,
 		    "app_key" => self::$appKey,
 		    "Accept" => "application/json"
-		  )
-		  {
-		  	"url": $data['imageURL'],
-		    "gallery_name": self::$galleryName,
-		    "subject_id": $data['id']
-		  }
+		  ),
+		  "{
+		  	\"url\": \"{$imageURL}\",
+		  	\"gallery_name\": \"{$galleryName}\",
+		  	\"subject_id\": \"{$data['id']}\"
+		  }"
 		);
 		return $response;
 	}
 
 	public function detectFace($data) {
 		$urlFaceDetect = self::$urlCore.self::$endpointDetect;
+		$imageURL = urldecode($data['imageURL']);
 		$response = Unirest\Request::post($urlFaceDetect,
 		  	array(
 		    "X-Mashape-Key" => "6eausabVMPmshTIsH6RFSxyjGtDDp1PeoG8jsn7XOLkw57PKs5",
@@ -41,17 +44,19 @@ class ImageMatch {
 		    "app_id" => self::$appID,
 		    "app_key" => self::$appKey,
 		    "Accept" => "application/json"
-		  )
-		  {
-		  	"url": $data['imageURL'],
-		  	"selector": "FULL"
-		  }
+		  ),
+		  "{
+		  	\"url\": \"{$imageURL}\",
+		  	\"selector\": \"FULL\"
+		  }"
 		);
 		return $response;
 	}
 
-	private function recognizeFace($data) {
+	public function recognizeFace($data) {
 		$urlFaceRecognize = self::$urlCore.self::$endpointRecognize;
+		$imageURL = urldecode($data['imageURL']);
+		$galleryName = self::$galleryName;
 		$response = Unirest\Request::post($urlFaceRecognize,
 		  	array(
 		    "X-Mashape-Key" => "6eausabVMPmshTIsH6RFSxyjGtDDp1PeoG8jsn7XOLkw57PKs5",
@@ -59,13 +64,13 @@ class ImageMatch {
 		    "app_id" => self::$appID,
 		    "app_key" => self::$appKey,
 		    "Accept" => "application/json"
-		  )
-		  {
-		    "url": $data['imageURL'],
-		    "gallery_name": self::$galleryName,
-		    "threshold": ".7",
-		    "max_num_results": "3"
-		  }
+		  ),
+		  "{
+		    \"url\": \"{$imageURL}\",
+		    \"gallery_name\": \"{$galleryName}\",
+		    \"threshold\": \".7\",
+		    \"max_num_results\": \"3\"
+		  }"
 		);
 		return $response;
 	}

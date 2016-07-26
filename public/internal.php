@@ -159,5 +159,6 @@ if (!isset($_SESSION['PID'])) {
 		</div>
 
 		<?php require_once(INCS_DIR.'scripts.inc.php'); ?>
+		<?php require_once(INCS_DIR.'result.inc.php'); ?>
 	</body>
 </html>

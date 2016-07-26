@@ -8,6 +8,21 @@ if (isset($_POST)) {
 	$data = array(
 		"imageURL" => $image
 	);
-	$find = Npfims::detectFace($data);
-	die(json_encode($find));
+	$detect = Npfims::detectFace($data);
+	if ($detect->body->images[0]->status === 'Complete' AND count($detect->body->images[0]->faces) >= 1) {
+		$recognize = Npfims::recognizeFace($data);
+		if ($recognize->body->images[0]->transaction->status === 'success') {
+			$entryID = $recognize->body->images[0]->transaction->subject;
+			$details = Npfims::retrieveDetails($entryID);
+			$confidence = ($recognize->body->images[0]->transaction->confidence / 1) * 100;
+			$details['confidence'] = round($confidence, 2) .'%';
+			die(json_encode($details));
+		}
+		if ($recognize->body->images[0]->transaction->status === 'failure') {
+			$response = array(
+				"status" => "failure",
+				"message" => "Oops, No Match Found!"
+			);
+		}
+	}
 }
