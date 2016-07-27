@@ -170,7 +170,6 @@ $(document).ready(function() {
         var self = $(this), ref = String(self.data("entry")), data = "edit-entry=true&ref=" + escape(ref);
         self.click(function(e) {
             e.preventDefault();
-            console.log("i have been clicked");
             $.post("executeeditentry", data, function(data) {
                 data = JSON.parse(data);
                 $('#form_editentry input[name="eeothername"]').val(data.Othername);
