@@ -135,6 +135,7 @@ $(document).ready(function() {
     });
     $("#form_newentry").submit(function(e) {
         e.preventDefault();
+        $("#loadingdiv").show();
         var fetch = {
             firstname: String($("#efirstname").val()),
             lastname: String($("#elastname").val()),
@@ -160,8 +161,10 @@ $(document).ready(function() {
             var data = JSON.parse(data), responseElem = $("#ealert-container");
             if (data["status"] === "failure") {
                 responseElem.removeClass("alert-success").addClass("alert-danger");
+                $("#loadingdiv").hide();
             } else if (data["status"] === "success") {
                 responseElem.removeClass("alert-danger").addClass("alert-success");
+                $("#loadingdiv").hide();
             }
             responseElem.html(data["message"]);
         });
@@ -255,13 +258,44 @@ $(document).ready(function() {
             responseElem.html(data["message"]);
         });
     });
+    var uploadBtn = document.getElementById("uploadBtn"), photoName, photoURL;
+    uploadBtn.onchange = function() {
+        photoName = this.value.substr(12);
+        photoURL = "http://npfims.com/photos/" + photoName;
+        document.getElementById("image").value = photoURL;
+    };
     $("#form_search").submit(function(e) {
         e.preventDefault();
-        var image = escape(String($("#image").val())), ready = true;
-        if (image.trim().length === 0) {
-            ready = false;
-        }
         $("#loadingdiv").show();
+        var image, file, ready = true;
+        if (uploadBtn.files.length > 0) {
+            file = uploadBtn.files[0];
+            if (!file.type.match("image.*")) {
+                ready = false;
+            }
+            var formData = new FormData();
+            formData.append("file", file, file.name);
+            $.ajax({
+                url: "executeinternal",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                type: "POST",
+                async: false,
+                success: function(data) {
+                    var data = JSON.parse(data);
+                    if (data.status === "success") {
+                        image = photoURL;
+                    }
+                }
+            });
+        } else {
+            image = escape(String($("#image").val()));
+            if (image.trim().length === 0) {
+                ready = false;
+            }
+        }
         ready && $.post("executeinternal", image, function(data) {
             var data = JSON.parse(data), responseElem = $("#internal-alert-container"), resultModal = $("#resultModal"), sex;
             if (data["status"] === "failure") {

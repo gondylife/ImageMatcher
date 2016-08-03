@@ -36,9 +36,28 @@ if (!isset($_SESSION['PID'])) {
 				font-size: 15px;
 			}
 			#panel-center {
-				width: 470px;
+				width: 540px;
 				height: 50px;
 				margin: 250px auto;
+			}
+			.fileUpload {
+			    position: relative;
+			    overflow: hidden;
+			    height: 50px;
+			    padding: 10px;
+			    background: #d83c3c;
+			    border-radius: 3px 0 0 3px; 
+			}
+			.fileUpload input.upload {
+			    position: absolute;
+			    top: 0;
+			    right: 0;
+			    margin: 0;
+			    padding: 0;
+			    font-size: 20px;
+			    cursor: pointer;
+			    opacity: 0;
+			    filter: alpha(opacity=0);
 			}
 			.cf:before, .cf:after{
 			    content:"";
@@ -51,7 +70,7 @@ if (!isset($_SESSION['PID'])) {
 			    zoom:1;
 			}
 			.form-wrapper {
-			    width: 470px;
+			    width: 540px;
 			    background: #444;
 			    background: rgba(0,0,0,.2);
 			    border-radius: 10px;
@@ -64,8 +83,7 @@ if (!isset($_SESSION['PID'])) {
 			    float: left;    
 			    font: bold 15px 'lucida sans', 'trebuchet MS', 'Tahoma';
 			    border: 0;
-			    background: #eee;
-			    border-radius: 3px 0 0 3px;      
+			    background: #eee; 
 			}
 			.form-wrapper input:focus {
 			    outline: 0;
@@ -161,10 +179,16 @@ if (!isset($_SESSION['PID'])) {
 				<div id="search-panel" class="col-sm-12">
 		    		<div id="panel-center">
 		    			<div id="internal-alert-container" class="alert fade in " role="alert"></div>
-		    			<form  method="POST" id="form_search" class="form-wrapper cf">
-        					<input type="text" id="image" name="image" placeholder="Enter image url here..." required />
-        					<button type="submit">Search</button>
-    					</form>
+		    			<form  method="POST" enctype="multipart/form-data" id="form_search" class="form-wrapper cf">
+			    			<div class="fileUpload btn btn-danger" style="width: 70px; float: left;">
+			    			    <span style="font-size: 20px;"><i class="fa fa-upload"></i></span>
+			    			    <input type="file" accept="image/*" id="uploadBtn" class="upload" />
+			    			</div>
+			    			<div style="width: 470px; float: right;">
+	        					<input type="text" id="image" name="image" placeholder="Enter image url here..." required />
+	        					<button type="submit">Search</button>
+	    					</div>
+	    				</form>
 		    		</div>
 		    	</div>
 		  	</div>

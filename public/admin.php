@@ -24,6 +24,7 @@ $personnels = Npfims::retrieveAllPersonnels();
         <?php require_once(INCS_DIR.'metadata.inc.php'); ?>
     </head>
     <body>
+        <div id="loadingdiv" style="z-index:5000; background-color:rgba(255,255,255,0.9); height:100%; width:100%; text-align:center; vertical-align:middle; display:none; position:absolute; padding:270px 20px 20px;"><img src="preloader.gif"><br><br><p style="font-size: 20px;"><em id="loadingText">Processing in progress...</em></div>
         <nav class="navbar navbar-default no-margin">
         <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header fixed-brand">
